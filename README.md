@@ -1,2 +1,2 @@
 # Frontend
-Nextjs, tailwindCSS, ShadCDN
+Nextjs, tailwindCSS, ShadCDN,,,
