@@ -1,0 +1,2 @@
+# Frontend
+Nextjs, tailwindCSS, ShadCDN
