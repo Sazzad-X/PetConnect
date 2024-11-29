@@ -5,7 +5,7 @@ import PopularPetBreads from "@/components/Home/PopularPetBreads";
 const page = () => {
   return (
     <div>
-      <div className="mx-auto container">
+      <div className="max-w-7xl mx-auto ">
         <Hero2 />
         <AdoptionRate/>
         <PopularPetBreads />
