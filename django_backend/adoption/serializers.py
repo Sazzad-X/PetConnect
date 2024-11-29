@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from adoption.models import User
+from adoption.models import User, Encyclopedia
 
 
 # Custom Registration
@@ -34,3 +34,10 @@ class UserRegistrationSerializer(RegisterSerializer):
             contact=self.validated_data.get("contact"),
         ).save()
         return user
+
+
+class EncyclpediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Encyclopedia
+        fields = "__all__"
+        read_only_fields = ("approved",)
