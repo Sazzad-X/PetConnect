@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from adoption.models import User, Encyclopedia
+from adoption.models import User, Encyclopedia, Pet
 
 
 # Custom Registration
@@ -39,5 +39,12 @@ class UserRegistrationSerializer(RegisterSerializer):
 class EncyclpediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Encyclopedia
+        fields = "__all__"
+        read_only_fields = ("approved",)
+
+
+class PetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pet
         fields = "__all__"
         read_only_fields = ("approved",)
