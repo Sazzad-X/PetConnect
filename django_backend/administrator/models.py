@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 
 
-class User(AbstractUser):
+class AuthUser(AbstractUser):
     # Boolean fields to select the type of account.
     is_user = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)

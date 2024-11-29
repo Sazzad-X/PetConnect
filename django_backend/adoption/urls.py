@@ -1,10 +1,11 @@
 from django.urls import path
+from adoption.views import UserRegistrationSerializer
 
 
 urlpatterns = [
     path(
         "registration/",
-        AgentRegistrationView.as_view(),
-        name="registration_agent",
+        UserRegistrationSerializer.as_view(),
+        name="registration_user",
     ),
 ]
