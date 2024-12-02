@@ -3,12 +3,14 @@ import {
     Card,
     CardContent
 } from "@/components/ui/card";
+import Link from "next/link";
 
 const CardTemp = () => {
   return (
     <div className="rounded-md shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out">
       <Card className="border border-gray-200">
         {/* Image Section */}
+        <Link href="/carehub/SingleProduct/1">
         <div className="aspect-video overflow-hidden rounded-t-md">
           <img
             src="/Dog.jpg"
@@ -16,14 +18,15 @@ const CardTemp = () => {
             alt="Night Fury"
           />
         </div>
+        </Link>
 
         {/* Content Section */}
         <CardContent className="p-5 space-y-4">
           {/* Title and Description */}
           <div className="space-y-2">
-            <h1 className="text-lg font-semibold text-gray-800 hover:underline cursor-pointer">
+            <Link href={"/carehub/SingleProduct/1"} className="text-lg font-semibold text-gray-800 hover:underline cursor-pointer">
             Premium Adult Wet Cat Food (Cat)
-            </h1>
+            </Link>
             <p className="text-gray-500 text-sm ">
              Lorem ipsum dolor sperspiciatis ullam repellat illum eaque possimus, numquam distinctio soluta?
             </p>
