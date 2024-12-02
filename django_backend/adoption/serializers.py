@@ -40,11 +40,31 @@ class EncyclpediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Encyclopedia
         fields = "__all__"
-        read_only_fields = ("approved", "updated_at", "created_at")
+        read_only_fields = ("approved", "updated_at", "created_at", "user")
+
+    def create(self, validated_data):
+        request = self.context.get("request")
+        print(request)
+
+        if request and hasattr(request, "user") and request.user.is_authenticated:
+            validated_data["user"] = request.user
+        else:
+            raise serializers.ValidationError({"user": "Authentication required."})
+        return super().create(validated_data)
 
 
 class PetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pet
         fields = "__all__"
-        read_only_fields = ("approved",)
+        read_only_fields = ("approved", "requested_at", "user", "status")
+
+    def create(self, validated_data):
+        request = self.context.get("request")
+        print(request)
+
+        if request and hasattr(request, "user") and request.user.is_authenticated:
+            validated_data["user"] = request.user
+        else:
+            raise serializers.ValidationError({"user": "Authentication required."})
+        return super().create(validated_data)

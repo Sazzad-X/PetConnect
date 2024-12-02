@@ -49,6 +49,9 @@ class PetApplication(models.Model):
 
 
 class Encyclopedia(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="encyclopedia_user"
+    )
     title = models.CharField(max_length=100)
     details = models.TextField()
     image = models.URLField()

@@ -97,14 +97,14 @@ class EncyclopediaApprovalView(APIView):
 
     def put(self, request, pk):
         encyclopedia = Encyclopedia.objects.get(pk=pk)
-        encyclopedia.is_approved = True
+        encyclopedia.approved = True
         encyclopedia.save()
-        return Response({"approved": True}, status=status.HTTP_200_OK)
+        return Response({"message": "Encyclopedia approved successfully."}, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):
         encyclopedia = Encyclopedia.objects.get(pk=pk)
         encyclopedia.delete()
-        return Response({"deleted": True}, status=status.HTTP_200_OK)
+        return Response({"message": "Encyclopedia deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 
 class PetApprovalView(APIView):
@@ -118,12 +118,12 @@ class PetApprovalView(APIView):
     # approve pet on put request
     def put(self, request, pk):
         pet = Pet.objects.get(pk=pk)
-        pet.is_approved = True
+        pet.approved = True
         pet.status = "Approved"
         pet.save()
-        return Response(status=status.HTTP_200_OK)
+        return Response({"message": "Pet approved successfully."}, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):
         pet = Pet.objects.get(pk=pk)
         pet.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "Pet deleted successfully."}, status=status.HTTP_204_NO_CONTENT)

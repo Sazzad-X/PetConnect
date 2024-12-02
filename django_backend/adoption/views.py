@@ -42,7 +42,7 @@ class PetView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = PetSerializer(data=request.data)
+        serializer = PetSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -59,7 +59,7 @@ class PetView(APIView):
     def delete(self, request, pk):
         pet = Pet.objects.get(id=pk)
         pet.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "Pet deleted successfully."})
 
 
 class PublicPetView(APIView):
@@ -85,7 +85,9 @@ class EncyclopediaView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = EncyclpediaSerializer(data=request.data)
+        serializer = EncyclpediaSerializer(
+            data=request.data, context={"request": request}
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -102,7 +104,7 @@ class EncyclopediaView(APIView):
     def delete(self, request, pk):
         encyclpedia = Encyclopedia.objects.get(id=pk)
         encyclpedia.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "Encyclopedia deleted successfully."})
 
 
 class PublicEncyclopediaView(APIView):
