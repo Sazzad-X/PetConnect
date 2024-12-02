@@ -40,7 +40,7 @@ class EncyclpediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Encyclopedia
         fields = "__all__"
-        read_only_fields = ("approved",)
+        read_only_fields = ("approved", "updated_at", "created_at")
 
 
 class PetSerializer(serializers.ModelSerializer):

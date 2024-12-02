@@ -10,6 +10,17 @@ from rest_framework import status
 from adoption.models import Pet, Encyclopedia
 from adoption.serializers import PetSerializer, EncyclpediaSerializer
 
+# auth
+from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate
+
+# email confirmation
+from allauth.account.views import ConfirmEmailView
+from allauth.account.models import EmailConfirmationHMAC, EmailConfirmation
+from django.shortcuts import redirect
+from django.http import HttpResponse
+
 
 # Authenticate User Only Class
 class AuthenticateOnlyAdmin(BasePermission):
@@ -23,11 +34,64 @@ class AuthenticateOnlyAdmin(BasePermission):
         return False
 
 
+class CustomLoginView(APIView):
+    def post(self, request, *args, **kwargs):
+        email = request.data.get("email")
+        password = request.data.get("password")
+
+        # Authenticate the user
+        user = authenticate(request, email=email, password=password)
+        if not user:
+            return Response(
+                {"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        # Generate tokens
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+
+        # Construct the response
+        response_data = {
+            "access": access_token,
+            "refresh": str(refresh),
+            "user": {
+                "pk": user.pk,
+                "username": user.username,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+            },
+            "is_user": user.is_user,
+            "is_admin": user.is_admin,
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
+
+class CustomConfirmEmailView(ConfirmEmailView):
+
+    def get(self, *args, **kwargs):
+        key = kwargs["key"]
+        try:
+            confirmation = EmailConfirmationHMAC.from_key(key)
+        except EmailConfirmation.DoesNotExist:
+            try:
+                confirmation = EmailConfirmation.objects.get(key=key.lower())
+            except EmailConfirmation.DoesNotExist:
+                confirmation = None
+
+        if confirmation:
+            confirmation.confirm(self.request)
+            return redirect("https://career-bridge.netlify.app/confirmation-success")
+        else:
+            return HttpResponse("Invalid or expired token", status=400)
+
+
 class EncyclopediaApprovalView(APIView):
     permission_classes = [AuthenticateOnlyAdmin]
 
     def get(self, request):
-        encyclopedias = Encyclopedia.objects.filter(is_approved=False)
+        encyclopedias = Encyclopedia.objects.filter(approved=False)
         serializer = EncyclpediaSerializer(encyclopedias, many=True)
         return Response(serializer.data)
 
@@ -35,19 +99,19 @@ class EncyclopediaApprovalView(APIView):
         encyclopedia = Encyclopedia.objects.get(pk=pk)
         encyclopedia.is_approved = True
         encyclopedia.save()
-        return Response(status=status.HTTP_200_OK)
+        return Response({"approved": True}, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):
         encyclopedia = Encyclopedia.objects.get(pk=pk)
         encyclopedia.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"deleted": True}, status=status.HTTP_200_OK)
 
 
 class PetApprovalView(APIView):
     permission_classes = [AuthenticateOnlyAdmin]
 
     def get(self, request):
-        pets = Pet.objects.filter(is_approved=False)
+        pets = Pet.objects.filter(approved=False)
         serializer = PetSerializer(pets, many=True)
         return Response(serializer.data)
 

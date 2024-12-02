@@ -9,11 +9,12 @@ from dj_rest_auth.views import (
     PasswordChangeView,
 )
 from django.views.generic import TemplateView
-# from administrator.views import LoginWthPermission, CustomPasswordChangeView
+from administrator.views import CustomLoginView
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("rest-auth/login/", CustomLoginView.as_view(), name="login_view"),
     # ---------- Auth ------------
     # path("rest-auth/login/", LoginWthPermission.as_view(), name="login_view"),
     # Password Change

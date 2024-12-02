@@ -10,7 +10,7 @@ urlpatterns = [
         name="encyclopedia-approval",
     ),
     path(
-        "encyclopedia-approval/<int:pk>/",
+        "encyclopedia-approval/<int:pk>",
         EncyclopediaApprovalView.as_view(),
         name="encyclopedia-approval",
     ),
