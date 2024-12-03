@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+
 # import os
 
 
@@ -28,7 +29,7 @@ SECRET_KEY = "django-insecure-h&1-w%)ody6nhj@^bi*t6cv1=xet%9vkt#f8)*k%9y^a*m6r+s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
