@@ -64,6 +64,11 @@ class PetView(APIView):
 
 class PublicPetView(APIView):
     def get(self, request):
+        if "id" in request.query_params:
+            pet = Pet.objects.get(id=request.query_params["id"])
+            serializer = PetSerializer(pet)
+            return Response(serializer.data)
+
         pets = Pet.objects.filter(approved=True)
         serializer = PetSerializer(pets, many=True)
         return Response(serializer.data)
@@ -109,6 +114,11 @@ class EncyclopediaView(APIView):
 
 class PublicEncyclopediaView(APIView):
     def get(self, request):
+        if "id" in request.query_params:
+            encyclpedia = Encyclopedia.objects.get(id=request.query_params["id"])
+            serializer = EncyclpediaSerializer(encyclpedia)
+            return Response(serializer.data)
+
         encyclpedias = Encyclopedia.objects.filter(approved=True)
         serializer = EncyclpediaSerializer(encyclpedias, many=True)
         return Response(serializer.data)
