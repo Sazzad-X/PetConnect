@@ -22,7 +22,7 @@ export default ({ userData }: { userData: any }) => {
           }
         );
         console.log(res.data);
-        setEncyclopedia(res.data);
+        setEncyclopedia(res.data);        
         // console.log(res);
       } catch (error: any) {
         console.log(error);
@@ -40,7 +40,7 @@ export default ({ userData }: { userData: any }) => {
           }
         );
         // console.log(res.data);
-        setAdoption(res.data);
+        setAdoption(res.data);        
       } catch (error: any) {
         console.log(error);
       }

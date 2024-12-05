@@ -14,28 +14,40 @@ export default () => {
     contact: "N/A",
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const router = useRouter();
   useEffect(() => {
     const User_Data = JSON.parse(localStorage.getItem("user_data") || "{}");
-    console.log(User_Data);
+    setIsAdmin(User_Data.is_admin);
+
     if (!User_Data.access_token) {
       router.push("/login");
     } else {
-      try {
-        axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/profile/`,
-          {
-            headers: {
-              Authorization: `Bearer ${User_Data.access_token}`,
-            },
-          }
-        ).then((res) => {
-          setUserData(res.data);
-          console.log(res.data);
+      if (!User_Data.is_admin) {
+        try {
+
+          axios.get(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/profile/`,
+            {
+              headers: {
+                Authorization: `Bearer ${User_Data.access_token}`,
+              },
+            }
+          ).then((res) => {
+            setUserData(res.data);
+            console.log(res.data);
+          });
+        } catch (error: any) {
+          console.log(error);
+        }
+      }
+      else {
+        setUserData({
+          name: "ADMIN",
+          address: "",
+          contact: "",
         });
-      } catch (error: any) {
-        console.log(error);
       }
     }
     setIsLoading(false);
@@ -72,14 +84,18 @@ export default () => {
               {userData?.name || "N/A"}
             </h1>
 
-            <p className="text-gray-600">
-              <span className="font-semibold">Address: </span>{" "}
-              {userData?.address || "Not provided"}
-            </p>
-            <p className="text-gray-600">
-              <span className="font-semibold">Contact: </span>{" "}
-              {userData?.contact || "Not provided"}
-            </p>
+            {!isAdmin &&
+              <p className="text-gray-600">
+                <span className="font-semibold">Address: </span>{" "}
+                {userData?.address || "Not provided"}
+              </p>
+            }
+            {
+              !isAdmin &&
+              <p className="text-gray-600">
+                <span className="font-semibold">Contact: </span>{" "}
+                {userData?.contact || "Not provided"}
+              </p>}
 
             {/* Buttons */}
             <div className="mt-6 flex gap-4">

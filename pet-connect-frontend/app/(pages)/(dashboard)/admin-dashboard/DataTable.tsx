@@ -57,7 +57,8 @@ const ProductList = ({
         }
       );
 
-      toast.success("Adopt Approved");
+      toast.success("Approved");
+      location.reload();
       console.log(userData.access_token);
     } catch (error: any) {
       toast.error("Error Occured");
