@@ -7,59 +7,96 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-const AddNewEncyloPedia = ({ userData }: { userData: any }) => {
+
+interface EncyclopediaDetails {
+  title: string;
+  details: string;
+  image: string; // Store image URL after uploading to imgbb
+}
+
+const AddEncylopedia = ({ userData }: { userData: any }) => {
   return (
     <Dialog>
       <DialogTrigger className="text-blue-600 flex items-center gap-2 text-sm ml-2">
         <div className="mb-4 bg-primary text-primary-foreground shadow hover:bg-primary/90 flex items-center px-2 py-2 rounded-md">
           <PlusIcon size={20} className="mr-2" />
-          Add New EncyloPedia
+          Add Encyclopedia
         </div>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle className="hidden">asd</DialogTitle>
-        <DialogDescription className="hidden">sad</DialogDescription>
-        <AddEncycloPedia userData={userData} />
+        <DialogTitle className="hidden">
+          Add Encyclopedia
+        </DialogTitle>
+        <DialogDescription></DialogDescription>
+        <AddPet userData={userData} />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default AddNewEncyloPedia;
 
-function AddEncycloPedia({ userData }: { userData: any }) {
-  const [Data, setData] = useState({
-    image: null as File | null,
+
+export function AddPet({ userData }: { userData: any }) {
+  const [petDetails, setPetDetails] = useState<EncyclopediaDetails>({
     title: "",
     details: "",
-   
+    image: "",
   });
 
-  const handleChange = (e: any) => {
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setData((prev) => ({ ...prev, [id]: value }));
+    setPetDetails((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleImageChange = (e: any) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setData((prev) => ({ ...prev, image: file }));
+    if (!file) return;
+
+    setIsUploading(true); // Disable Save Changes button
+
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const imgbbAPIKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+      const response = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`,
+        formData
+      );
+
+      const imageUrl = response.data.data.url; // Get the uploaded image URL
+      setPetDetails((prev) => ({ ...prev, image: imageUrl }));
+      toast.success("Image uploaded successfully.");
+    } catch (error) {
+      toast.error("Failed to upload image. Please try again.");
+      console.error("Image upload error:", error);
+    } finally {
+      setIsUploading(false); // Re-enable Save Changes button
     }
   };
 
-  const handleSubmit =async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
       await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/encyclopedia/`,
-        Data,
+        petDetails,
         {
           headers: {
             Authorization: `Bearer ${userData.access_token}`,
@@ -67,12 +104,11 @@ function AddEncycloPedia({ userData }: { userData: any }) {
         }
       );
 
-      toast.success("Added new Encyclopedia.");
+      toast.success("Added new encyclopedia.");
+      location.reload();
     } catch (error: any) {
-      toast.error("Failed to add new Encyclopedia");
+      toast.error("Failed to add new encyclopedia");
     }
-    console.log(Data);
-    
   };
 
   return (
@@ -94,21 +130,19 @@ function AddEncycloPedia({ userData }: { userData: any }) {
               <Input
                 id="title"
                 type="text"
-                placeholder="Enter the pet's name"
-                value={Data.title}
+                placeholder="Enter the title"
+                value={petDetails.title}
                 onChange={handleChange}
                 required
               />
             </div>
-            
-            
             <div className="space-y-2">
               <Label htmlFor="details">Details</Label>
               <Input
                 id="details"
                 type="text"
-                placeholder="Enter a brief details"
-                value={Data.details}
+                placeholder="Enter brief details"
+                value={petDetails.details}
                 onChange={handleChange}
                 required
               />
@@ -122,10 +156,10 @@ function AddEncycloPedia({ userData }: { userData: any }) {
                 onChange={handleImageChange}
                 required
               />
-              {Data.image && (
+              {petDetails.image && (
                 <div className="mt-2">
                   <img
-                    src={URL.createObjectURL(Data.image)}
+                    src={petDetails.image}
                     alt="Pet Preview"
                     className="w-32 h-32 object-cover rounded-md"
                   />
@@ -133,8 +167,8 @@ function AddEncycloPedia({ userData }: { userData: any }) {
               )}
             </div>
             <div className="col-span-full">
-              <Button type="submit" className="w-full">
-                Save Changes
+              <Button type="submit" className="w-full" disabled={isUploading}>
+                {isUploading ? "Uploading Image..." : "Save Changes"}
               </Button>
             </div>
           </form>
@@ -143,3 +177,5 @@ function AddEncycloPedia({ userData }: { userData: any }) {
     </div>
   );
 }
+
+export default AddEncylopedia;

@@ -26,7 +26,7 @@ interface PetDetails {
   breed: string;
   age: number;
   details: string;
-  image: File | null;
+  image: string; // Store image URL after uploading to imgbb
 }
 
 const AddNewPet = ({ userData }: { userData: any }) => {
@@ -47,24 +47,48 @@ const AddNewPet = ({ userData }: { userData: any }) => {
   );
 };
 
+
+
 export function AddPet({ userData }: { userData: any }) {
   const [petDetails, setPetDetails] = useState<PetDetails>({
     title: "",
     breed: "",
     age: 0,
     details: "",
-    image: null,
+    image: "",
   });
+
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setPetDetails((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setPetDetails((prev) => ({ ...prev, image: file }));
+    if (!file) return;
+
+    setIsUploading(true); // Disable Save Changes button
+
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const imgbbAPIKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+      const response = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`,
+        formData
+      );
+
+      const imageUrl = response.data.data.url; // Get the uploaded image URL
+      setPetDetails((prev) => ({ ...prev, image: imageUrl }));
+      toast.success("Image uploaded successfully.");
+    } catch (error) {
+      toast.error("Failed to upload image. Please try again.");
+      console.error("Image upload error:", error);
+    } finally {
+      setIsUploading(false); // Re-enable Save Changes button
     }
   };
 
@@ -83,6 +107,7 @@ export function AddPet({ userData }: { userData: any }) {
       );
 
       toast.success("Added new pet.");
+      location.reload();
     } catch (error: any) {
       toast.error("Failed to add new pet");
     }
@@ -158,7 +183,7 @@ export function AddPet({ userData }: { userData: any }) {
               {petDetails.image && (
                 <div className="mt-2">
                   <img
-                    src={URL.createObjectURL(petDetails.image)}
+                    src={petDetails.image}
                     alt="Pet Preview"
                     className="w-32 h-32 object-cover rounded-md"
                   />
@@ -166,8 +191,8 @@ export function AddPet({ userData }: { userData: any }) {
               )}
             </div>
             <div className="col-span-full">
-              <Button type="submit" className="w-full">
-                Save Changes
+              <Button type="submit" className="w-full" disabled={isUploading}>
+                {isUploading ? "Uploading Image..." : "Save Changes"}
               </Button>
             </div>
           </form>

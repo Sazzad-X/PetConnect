@@ -7,8 +7,9 @@ from adoption.serializers import (
     UserRegistrationSerializer,
     EncyclpediaSerializer,
     PetSerializer,
+    UserSerializer,
 )
-from adoption.models import Encyclopedia, Pet
+from adoption.models import Encyclopedia, Pet, User
 
 
 class AuthenticateOnlyUser(BasePermission):
@@ -24,6 +25,22 @@ class AuthenticateOnlyUser(BasePermission):
 
 class UserRegistrationView(RegisterView):
     serializer_class = UserRegistrationSerializer
+
+
+class ProfileView(APIView):
+    permission_classes = [AuthenticateOnlyUser]
+
+    def get(self, request):
+        user = User.objects.get(user_id=request.user.id)
+        return Response(UserSerializer(user).data)
+
+    def put(self, request):
+        user = User.objects.get(user_id=request.user.id)
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # create CRUD API for Pet

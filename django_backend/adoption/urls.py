@@ -5,6 +5,7 @@ from adoption.views import (
     PublicEncyclopediaView,
     PetView,
     PublicPetView,
+    ProfileView,
 )
 
 
@@ -13,6 +14,11 @@ urlpatterns = [
         "registration/",
         UserRegistrationView.as_view(),
         name="registration_user",
+    ),
+    path(
+        "profile/",
+        ProfileView.as_view(),
+        name="profile",
     ),
     path(
         "pet/",

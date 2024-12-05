@@ -14,24 +14,65 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 
-export default () => {
+export default ({ userData }: { userData: any }) => {
   const [profile, setProfile] = useState({
-    name: "Night Fury",
-    location: "Dhaka, Bangladesh",
-    contact: "+880123456789",
+    name: userData.name,
+    location: userData.address,
+    contact: userData.contact,
   });
+
+  useEffect(() => {
+    setProfile({
+      name: userData.name,
+      location: userData.address,
+      contact: userData.contact,
+    });
+  }, [userData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setProfile((prev) => ({ ...prev, [id]: value }));
+
+    // Update the profile state
+    setProfile((prev) => {
+      const updatedProfile = { ...prev, [id]: value };
+
+      // Send the updated data to the server
+      const access_token = JSON.parse(localStorage.getItem("user_data") || "{}")["access_token"];
+      axios
+        .put(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/profile/`,
+          {
+            name: updatedProfile.name,
+            address: updatedProfile.location,
+            contact: updatedProfile.contact,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res.data);
+          // Refresh the page after the API call succeeds
+          location.reload();
+        })
+        .catch((error) => {
+          console.error("Error updating profile:", error);
+        });
+
+      return updatedProfile;
+    });
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" className="mt-4">
-            <BiSolidEditAlt className="mr-2" />
+          <BiSolidEditAlt className="mr-2" />
           Edit
         </Button>
       </DialogTrigger>
@@ -54,7 +95,7 @@ export default () => {
               className="col-span-3"
             />
           </div>
-          
+
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="location" className="text-right">
               Location

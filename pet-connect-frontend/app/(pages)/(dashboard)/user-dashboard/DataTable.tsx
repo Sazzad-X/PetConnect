@@ -89,7 +89,7 @@ const ProductList = ({
             <TableRow key={index}>
               <TableCell className="font-medium">{item.title}</TableCell>
               <TableCell>{item.breed}</TableCell>
-              <TableCell>{item.approved ? "Approved" : "Pending"}</TableCell>
+              <TableCell>{item.status}</TableCell>
               <TableCell className="text-right flex items-end justify-end cursor-pointer ">
                 <DropdownMenu>
                   <DropdownMenuTrigger>
