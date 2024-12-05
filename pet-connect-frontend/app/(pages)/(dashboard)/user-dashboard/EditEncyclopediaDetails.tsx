@@ -15,12 +15,10 @@ export default ({ data }: { data: any }) => {
           Edit
         </DialogTrigger>
         <DialogContent>
-          <PostPetEdit
+          <EditEncyclopediaDetails
             initialPetData={{
               id: data.id,
               title: data.title,
-              breed: data.breed,
-              age: data.age,
               details: data.details,
               image: data.image,
             }}
@@ -45,12 +43,10 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 
-export function PostPetEdit({ initialPetData }: { initialPetData: any }) {
+export function EditEncyclopediaDetails({ initialPetData }: { initialPetData: any }) {
   const [petDetails, setPetDetails] = useState({
     id: initialPetData.id,
     title: initialPetData.title,
-    breed: initialPetData.breed,
-    age: initialPetData.age,
     details: initialPetData.details,
     image: initialPetData.image,
   });
@@ -69,11 +65,9 @@ export function PostPetEdit({ initialPetData }: { initialPetData: any }) {
     const access_token = JSON.parse(localStorage.getItem("user_data") || "{}")["access_token"];
     axios
       .put(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/pet/${initialPetData.id}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/encyclopedia/${initialPetData.id}`,
         {
           title: petDetails.title,
-          breed: petDetails.breed,
-          age: petDetails.age,
           details: petDetails.details,
           image: initialPetData.image,
         },
@@ -85,7 +79,7 @@ export function PostPetEdit({ initialPetData }: { initialPetData: any }) {
       )
       .then((res) => {
         console.log(res.data);
-        toast.success("Pet Updated");
+        toast.success("Encyclopedia Updated");
         // Refresh the page after the API call succeeds
         location.reload();
       })
@@ -119,28 +113,6 @@ export function PostPetEdit({ initialPetData }: { initialPetData: any }) {
                 type="text"
                 placeholder="Enter the title"
                 value={petDetails.title}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="breed">Breed</Label>
-              <Input
-                id="breed"
-                type="text"
-                placeholder="Enter the pet's breed"
-                value={petDetails.breed}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="age">Age</Label>
-              <Input
-                id="age"
-                type="number"
-                placeholder="Enter the pet's age"
-                value={petDetails.age}
                 onChange={handleChange}
                 required
               />

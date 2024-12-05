@@ -17,6 +17,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdDeleteForever } from "react-icons/md";
 import AddNewPet from "./AddNewPet";
 import EditProduct from "./EditPetDetails";
+import EditEncyclopediaDetails from "./EditEncyclopediaDetails";
 import AddNewEncyloPedia from "./AddNewEncyloPedia";
 import axios from "axios";
 import { toast } from "sonner";
@@ -43,6 +44,8 @@ const ProductList = ({
 
       toast.success("Pet Deleted");
       console.log(userData.access_token);
+      // refresh the page
+      location.reload();
     } catch (error: any) {
       toast.error("Error Occured");
     }
@@ -52,14 +55,15 @@ const ProductList = ({
   const handleDeleteEncyclopedia = async (id: any) => {
     try {
       const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/encyclopedia/${id}`,{
-          headers: {
-            Authorization: `Bearer ${userData.access_token}`,
-          },
-        }
+        `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/encyclopedia/${id}`, {
+        headers: {
+          Authorization: `Bearer ${userData.access_token}`,
+        },
+      }
       );
 
       toast.success("Encyclopedia Deleted");
+      location.reload();
     } catch (error: any) {
       toast.error("Error Occured");
     }
@@ -105,7 +109,9 @@ const ProductList = ({
                       Delete
                     </DropdownMenuItem>
 
-                    <EditProduct  />
+                    <EditProduct
+                      data={item}
+                    />
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
@@ -132,7 +138,7 @@ const ProductList = ({
                       Delete
                     </DropdownMenuItem>
 
-                    <EditProduct />
+                    <EditEncyclopediaDetails data={item} />
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
