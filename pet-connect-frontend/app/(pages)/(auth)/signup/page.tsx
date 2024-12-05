@@ -14,17 +14,49 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function Page() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [contact, setContact] = useState("");
-  const [location, setLocation] = useState("");
+  const [address, setAddress] = useState("");
+  const [password1, setPassword1] = useState("");
+  const [password2, setPassword2] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const router = useRouter();
+
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log({ email, password, contact, location });
+    
+    // Check if the passwords match
+    if (password1 !== password2) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/registration/`,
+        {
+          name,
+          email,
+          contact,
+          address,
+          password1: password1, 
+          password2: password2, 
+        }
+      );
+
+      toast.success("Verification e-mail sent.");
+      router.push("/login"); 
+    } catch (error) {
+      toast.error("Registration failed");
+      console.log("Error", error);
+    }
   };
 
   return (
@@ -38,6 +70,20 @@ export default function Page() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Name */}
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* Email */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -49,15 +95,43 @@ export default function Page() {
                 required
               />
             </div>
+
+            {/* Contact Number */}
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="contact">Contact Number</Label>
+              <Input
+                id="contact"
+                type="tel"
+                placeholder="Enter your contact number"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* Address */}
+            <div className="space-y-2">
+              <Label htmlFor="address">Address</Label>
+              <Input
+                id="address"
+                type="text"
+                placeholder="Enter your address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* Password */}
+            <div className="space-y-2">
+              <Label htmlFor="password1">Password</Label>
               <div className="relative">
                 <Input
-                  id="password"
+                  id="password1"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={password1}
+                  onChange={(e) => setPassword1(e.target.value)}
                   required
                 />
                 <Button
@@ -78,28 +152,22 @@ export default function Page() {
                 </Button>
               </div>
             </div>
+
+            {/* Confirm Password */}
             <div className="space-y-2">
-              <Label htmlFor="contact">Contact Number</Label>
-              <Input
-                id="contact"
-                type="tel"
-                placeholder="Enter your contact number"
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
-                required
-              />
+              <Label htmlFor="password2">Re-enter Password</Label>
+              <div className="relative">
+                <Input
+                  id="password2"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Re-enter your password"
+                  value={password2}
+                  onChange={(e) => setPassword2(e.target.value)}
+                  required
+                />
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="location">Location</Label>
-              <Input
-                id="location"
-                type="text"
-                placeholder="Enter your location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                required
-              />
-            </div>
+
             <Button type="submit" className="w-full">
               Sign Up
             </Button>

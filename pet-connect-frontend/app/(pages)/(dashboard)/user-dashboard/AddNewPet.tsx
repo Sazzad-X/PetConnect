@@ -7,13 +7,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import axios from "axios";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
-const AddNewPet = () => {
+interface PetDetails {
+  title: string;
+  breed: string;
+  age: number;
+  details: string;
+  image: File | null;
+}
+
+const AddNewPet = ({ userData }: { userData: any }) => {
   return (
     <Dialog>
       <DialogTrigger className="text-blue-600 flex items-center gap-2 text-sm ml-2">
@@ -23,41 +39,53 @@ const AddNewPet = () => {
         </div>
       </DialogTrigger>
       <DialogContent>
-        <AddPet />
+        <DialogTitle className="hidden">Add New Pet</DialogTitle>
+        <DialogDescription></DialogDescription>
+        <AddPet userData={userData} />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default AddNewPet;
-
-export function AddPet() {
-  const [petDetails, setPetDetails] = useState({
-    petName: "",
+export function AddPet({ userData }: { userData: any }) {
+  const [petDetails, setPetDetails] = useState<PetDetails>({
+    title: "",
     breed: "",
-    age: "",
-    color: "",
-    price: "",
-    gender: "",
-    location: "",
-    description: "",
-    image: null as File | null,
+    age: 0,
+    details: "",
+    image: null,
   });
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setPetDetails((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleImageChange = (e: any) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setPetDetails((prev) => ({ ...prev, image: file }));
     }
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/pet/`,
+        petDetails,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.access_token}`,
+          },
+        }
+      );
+
+      toast.success("Added new pet.");
+    } catch (error: any) {
+      toast.error("Failed to add new pet");
+    }
   };
 
   return (
@@ -75,12 +103,12 @@ export function AddPet() {
             className="grid grid-cols-1 gap-4 sm:grid-cols-2"
           >
             <div className="space-y-2">
-              <Label htmlFor="petName">Pet Name</Label>
+              <Label htmlFor="title">Pet Name</Label>
               <Input
-                id="petName"
+                id="title"
                 type="text"
                 placeholder="Enter the pet's name"
-                value={petDetails.petName}
+                value={petDetails.title}
                 onChange={handleChange}
                 required
               />
@@ -100,7 +128,7 @@ export function AddPet() {
               <Label htmlFor="age">Age</Label>
               <Input
                 id="age"
-                type="text"
+                type="number"
                 placeholder="Enter the pet's age"
                 value={petDetails.age}
                 onChange={handleChange}
@@ -108,61 +136,12 @@ export function AddPet() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="color">Color</Label>
+              <Label htmlFor="details">Details</Label>
               <Input
-                id="color"
+                id="details"
                 type="text"
-                placeholder="Enter the pet's color"
-                value={petDetails.color}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="price">Price</Label>
-              <Input
-                id="price"
-                type="number"
-                placeholder="Enter the price"
-                value={petDetails.price}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="gender">Gender</Label>
-              <select
-                id="gender"
-                className="w-full border rounded-md p-2"
-                value={petDetails.gender}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>
-                  Select gender
-                </option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="location">Location</Label>
-              <Input
-                id="location"
-                type="text"
-                placeholder="Enter the location"
-                value={petDetails.location}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Input
-                id="description"
-                type="text"
-                placeholder="Enter a brief description"
-                value={petDetails.description}
+                placeholder="Enter brief details"
+                value={petDetails.details}
                 onChange={handleChange}
                 required
               />
@@ -197,3 +176,5 @@ export function AddPet() {
     </div>
   );
 }
+
+export default AddNewPet;

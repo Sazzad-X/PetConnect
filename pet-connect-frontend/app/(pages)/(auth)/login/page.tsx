@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -15,15 +15,48 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ email, password });
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/rest-auth/login/`,
+        {
+          email,
+          password,
+        }
+      );
+      
+      const { access, refresh, is_user, is_admin, user } = res.data;
+
+
+      const userData = {
+        access_token: access,
+        refresh_token: refresh,
+        user,
+        is_user,
+        is_admin,
+      };
+      localStorage.setItem("user_data", JSON.stringify(userData));
+
+      axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
+      // console.log("Response", res);
+      toast.success("Login successful");
+      router.push("/");
+    } catch (error) {
+      toast.error("Login failed");
+      console.log("Error", error);
+    }
   };
 
   return (

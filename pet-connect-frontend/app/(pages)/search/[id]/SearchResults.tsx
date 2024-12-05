@@ -1,3 +1,5 @@
+"use client";
+import axios from "axios";
 import {
   Select,
   SelectContent,
@@ -11,7 +13,29 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Filter from "./Filter";
 import PetCard from "./PetCard";
-const SearchResults = () => {
+import { useEffect, useState } from "react";
+const SearchResults = ({ userData }: { userData: any }) => {
+  const [adoption, setAdoption] = useState([]);
+  useEffect(() => {
+    const fetchingAdoption = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/public-pet/`,
+          {
+            headers: {
+              Authorization: `Bearer ${userData.access_token}`,
+            },
+          }
+        );
+        console.log(res.data);
+        setAdoption(res.data);
+      } catch (error: any) {
+        console.log(error);
+      }
+    };
+
+    fetchingAdoption();
+  }, []);
   return (
     <>
       <div className="flex items-center justify-between mb-6">
@@ -44,8 +68,8 @@ const SearchResults = () => {
 
       {/* Grid for Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  gap-4">
-        {Array.from({ length: 7 }).map((_, i) => (
-          <PetCard key={i} />
+        {adoption.map((item, i) => (
+          <PetCard item={item} key={i} />
         ))}
       </div>
     </>

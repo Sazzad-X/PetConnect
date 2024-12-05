@@ -7,12 +7,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import axios from "axios";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
-const AddNewEncyloPedia = () => {
+import { toast } from "sonner";
+const AddNewEncyloPedia = ({ userData }: { userData: any }) => {
   return (
     <Dialog>
       <DialogTrigger className="text-blue-600 flex items-center gap-2 text-sm ml-2">
@@ -22,7 +24,9 @@ const AddNewEncyloPedia = () => {
         </div>
       </DialogTrigger>
       <DialogContent>
-        <AddEncycloPedia />
+        <DialogTitle className="hidden">asd</DialogTitle>
+        <DialogDescription className="hidden">sad</DialogDescription>
+        <AddEncycloPedia userData={userData} />
       </DialogContent>
     </Dialog>
   );
@@ -30,31 +34,44 @@ const AddNewEncyloPedia = () => {
 
 export default AddNewEncyloPedia;
 
-function AddEncycloPedia() {
-  const [Details, setDetails] = useState({
+function AddEncycloPedia({ userData }: { userData: any }) {
+  const [Data, setData] = useState({
     image: null as File | null,
     title: "",
-    description: "",
-    price: "",
-    serviceType: "",
-    location: "",
+    details: "",
+   
   });
 
   const handleChange = (e: any) => {
     const { id, value } = e.target;
-    setDetails((prev) => ({ ...prev, [id]: value }));
+    setData((prev) => ({ ...prev, [id]: value }));
   };
 
   const handleImageChange = (e: any) => {
     const file = e.target.files?.[0];
     if (file) {
-      setDetails((prev) => ({ ...prev, image: file }));
+      setData((prev) => ({ ...prev, image: file }));
     }
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit =async (e: any) => {
     e.preventDefault();
-    console.log(Details);
+    try {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/encyclopedia/`,
+        Data,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.access_token}`,
+          },
+        }
+      );
+
+      toast.success("Added new Encyclopedia.");
+    } catch (error: any) {
+      toast.error("Failed to add new Encyclopedia");
+    }
+    console.log(Data);
     
   };
 
@@ -78,45 +95,20 @@ function AddEncycloPedia() {
                 id="title"
                 type="text"
                 placeholder="Enter the pet's name"
-                value={Details.title}
+                value={Data.title}
                 onChange={handleChange}
                 required
               />
             </div>
+            
+            
             <div className="space-y-2">
-              <Label htmlFor="serviceType">Service Type</Label>
-              <select
-                id="serviceType"
-                className="w-full border rounded-md p-2"
-                value={Details.serviceType}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>
-                  Service Type
-                </option>
-                <option value="Medicine">Medicine</option>
-                <option value="Food">Food</option>
-              </select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="details">Details</Label>
               <Input
-                id="location"
+                id="details"
                 type="text"
-                placeholder="Enter the location"
-                value={Details.location}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Input
-                id="description"
-                type="text"
-                placeholder="Enter a brief description"
-                value={Details.description}
+                placeholder="Enter a brief details"
+                value={Data.details}
                 onChange={handleChange}
                 required
               />
@@ -130,10 +122,10 @@ function AddEncycloPedia() {
                 onChange={handleImageChange}
                 required
               />
-              {Details.image && (
+              {Data.image && (
                 <div className="mt-2">
                   <img
-                    src={URL.createObjectURL(Details.image)}
+                    src={URL.createObjectURL(Data.image)}
                     alt="Pet Preview"
                     className="w-32 h-32 object-cover rounded-md"
                   />

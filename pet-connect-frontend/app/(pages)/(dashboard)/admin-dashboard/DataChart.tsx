@@ -2,11 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
-export default () => {
+export default ({
+  encyclopedia,
+  adoption,
+}: {
+  encyclopedia: any;
+  adoption: any;
+}) => {
   const Data = [
-    { title: "Total Pets/Encylopedia", value: 10, color: "#0088FE" },
-    { title: "Approved", value: 5, color: "#00C49F" },
-    { title: "Rejected", value: 1, color: "#FFBB28" },
+    { title: "Total Adoptions", value: encyclopedia.length, color: "#0088FE" },
+    { title: "Total Encyclopedias", value: adoption.length, color: "#00C49F" },
+    { title: "Total", value: encyclopedia.length+adoption.length, color: "#FFBB28" },
   ];
 
   const chartData = Data.map((item) => ({

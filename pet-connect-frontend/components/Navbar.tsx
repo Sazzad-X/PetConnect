@@ -1,16 +1,29 @@
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Home, Menu, PawPrint, User } from "lucide-react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
 const Navbar2 = () => {
-  const isLogin = true;
+  const [isLogin, setIsLogin] = useState(false);
+  useEffect(() => {
+    const userData = localStorage.getItem("user_data");
+    setIsLogin(userData ? true : false);
+  }, []);
+ 
 
   return (
     <div className="shadow-sm p-2 bg-white sticky top-0 z-50 ">
@@ -29,8 +42,8 @@ const Navbar2 = () => {
           <>
             <Link href="/profile" className="hidden md:flex">
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarImage src="/profile.png" />
+                <AvatarFallback>P</AvatarFallback>
               </Avatar>
             </Link>
           </>
@@ -71,7 +84,7 @@ const NavItems = () => {
         <NavigationMenuItem>
           <Link
             className="inline-flex h-9 items-center px-4 py-2 text-sm font-medium rounded-md hover:bg-accent hover:text-accent-foreground focus:outline-none"
-            href="/user-dashboard"
+            href="/dashboard"
           >
             Dashboard
           </Link>
@@ -104,18 +117,22 @@ const MobileNav = () => {
   const isLogin = true;
   return (
     <Sheet>
-      <SheetTrigger asChild >
+      <SheetTrigger asChild>
         <Button variant="outline" size="icon" className="mr-2 md:hidden">
           <Menu className="h-4 w-4" />
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
       <SheetContent>
-        <div className="flex flex-col space-y-4 md:hidden">
-          <Link href="/" className="flex items-center space-x-2">
+        <SheetTitle>
+          {" "}
+          <Link href="/" className="flex items-center space-x-2 mb-4">
             <PawPrint className="h-6 w-6" />
             <span className="font-bold">PetAdopt</span>
           </Link>
+        </SheetTitle>
+        <SheetDescription className="hidden">description</SheetDescription>
+        <div className="flex flex-col space-y-4 md:hidden">
           <nav className="flex flex-col space-y-2">
             <SheetTrigger asChild className="flex items-start justify-start">
               <Link href="/" className="text-sm hover:underline">
@@ -123,7 +140,7 @@ const MobileNav = () => {
               </Link>
             </SheetTrigger>
             <SheetTrigger asChild className="flex items-start justify-start">
-              <Link href="/user-dashboard" className="text-sm hover:underline">
+              <Link href="/dashboard" className="text-sm hover:underline">
                 Dashboard
               </Link>
             </SheetTrigger>
