@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from adoption.models import User, Encyclopedia, Pet
+from adoption.models import User, Encyclopedia, Pet, PetApplication
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -73,4 +73,24 @@ class PetSerializer(serializers.ModelSerializer):
             validated_data["user"] = request.user
         else:
             raise serializers.ValidationError({"user": "Authentication required."})
+        return super().create(validated_data)
+
+
+class PetApplicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PetApplication
+        fields = "__all__"
+        read_only_fields = (
+            "requested_at",
+            "adopter",
+        )
+
+    def create(self, validated_data):
+        request = self.context.get("request")
+        print(request)
+
+        if request and hasattr(request, "user") and request.user.is_authenticated:
+            validated_data["adopter"] = request.user
+        else:
+            raise serializers.ValidationError({"adopter": "Authentication required."})
         return super().create(validated_data)

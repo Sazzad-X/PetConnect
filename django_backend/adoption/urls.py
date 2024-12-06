@@ -6,6 +6,7 @@ from adoption.views import (
     PetView,
     PublicPetView,
     ProfileView,
+    PetApplicationView,
 )
 
 
@@ -49,5 +50,10 @@ urlpatterns = [
         "public-encyclopedia/",
         PublicEncyclopediaView.as_view(),
         name="public-encyclopedia",
+    ),
+    path(
+        "pet-application/",
+        PetApplicationView.as_view(),
+        name="pet-application",
     ),
 ]

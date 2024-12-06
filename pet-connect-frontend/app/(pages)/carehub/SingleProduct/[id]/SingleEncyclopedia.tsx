@@ -49,16 +49,6 @@ export default ({ userData, params }: { userData: any; params: any }) => {
 
           {/* Pet Description */}
           <p className="text-gray-600 mb-6">{encyclopedia.details}</p>
-
-          {/* Action Buttons */}
-          <div className="mt-8 flex gap-4">
-            <Button className="bg-green-600 hover:bg-green-700 duration-150">
-              <PiMoneyWavyFill className="mr-2" />
-              Purchase
-            </Button>
-          </div>
-
-
         </div>
       </div>
     </div>

@@ -8,8 +8,9 @@ from adoption.serializers import (
     EncyclpediaSerializer,
     PetSerializer,
     UserSerializer,
+    PetApplicationSerializer,
 )
-from adoption.models import Encyclopedia, Pet, User
+from adoption.models import Encyclopedia, Pet, User, PetApplication
 
 
 class AuthenticateOnlyUser(BasePermission):
@@ -139,3 +140,27 @@ class PublicEncyclopediaView(APIView):
         encyclpedias = Encyclopedia.objects.filter(approved=True)
         serializer = EncyclpediaSerializer(encyclpedias, many=True)
         return Response(serializer.data)
+
+
+class PetApplicationView(APIView):
+    permission_classes = [AuthenticateOnlyUser]
+
+    def get(self, request):
+        # get individual pet application
+        if "id" in request.query_params:
+            pet_application = PetApplication.objects.get(id=request.query_params["id"])
+            serializer = PetApplicationSerializer(pet_application)
+            return Response(serializer.data)
+
+        pet_applications = PetApplication.objects.filter(adopter=request.user)
+        serializer = PetApplicationSerializer(pet_applications, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = PetApplicationSerializer(
+            data=request.data, context={"request": request}
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

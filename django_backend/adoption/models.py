@@ -44,13 +44,15 @@ class PetApplication(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="adopter"
     )
     message = models.CharField(max_length=500)
-    requested_at = models.DateTimeField(auto_now_add=True)
     meeting_time = models.DateTimeField()
+    requested_at = models.DateTimeField(auto_now_add=True)
 
 
 class Encyclopedia(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="encyclopedia_user"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="encyclopedia_user",
     )
     title = models.CharField(max_length=100)
     details = models.TextField()
