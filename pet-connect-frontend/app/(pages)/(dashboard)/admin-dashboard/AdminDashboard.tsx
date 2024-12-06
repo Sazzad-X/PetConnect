@@ -9,7 +9,8 @@ import axios from "axios";
 
 export default ({ userData }: { userData: any }) => {
   const [encyclopedia, setEncyclopedia] = useState([]);
-  const [adoption, setAdoption] = useState([]);
+  const [adoption, setAdoption] = useState([]);  
+
   useEffect(() => {
     const fetchingEncyclopedia = async () => {
       try {
@@ -45,6 +46,7 @@ export default ({ userData }: { userData: any }) => {
         console.log(error);
       }
     };
+    
     fetchingEncyclopedia();
     fetchingAdoption();
   }, []);

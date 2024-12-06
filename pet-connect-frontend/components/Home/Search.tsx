@@ -14,12 +14,11 @@ import {
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 export default function SearchBar() {
-  const [category, setCategory] = React.useState("all");
   const [searchTerm, setSearchTerm] = React.useState("");
   const router = useRouter();
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push(`/search/${category}?q=${searchTerm}`);
+    router.push(`/search/all?q=${searchTerm}`);
 
   };
 
@@ -39,20 +38,8 @@ export default function SearchBar() {
               className="w-full rounded-md outline-none border-none focus-visible:outline-none focus-visible:ring-0 shadow-none"
             />
           </div>
-
-          <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger className="w-full sm:w-[180px] rounded-md outline-none border-none focus:outline-none focus-visible:outline-none focus-visible:ring-0   shadow-none ">
-              <SelectValue placeholder="Select category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Pets</SelectItem>
-              <SelectItem value="dogs">Dogs</SelectItem>
-              <SelectItem value="cats">Cats</SelectItem>
-              <SelectItem value="birds">Birds</SelectItem>
-              <SelectItem value="other">Other Pets</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button size={"icon"} className="rounded-r-full md:px-0 px-2">
+          
+          <Button size={"icon"} className="rounded-r-full md:px-0 px-2 w-20">
             <Search className="h-4 w-4" />
           </Button>
         </form>

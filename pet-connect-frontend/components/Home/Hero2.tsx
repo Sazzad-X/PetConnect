@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import SearchBar from "./Search";
@@ -24,7 +25,14 @@ export default function HeroSection() {
 
         {/* Optional Call-to-Action Buttons */}
         <div className="mt-6 flex gap-4">
-          <Button >
+          <Button
+            // scroll down to 20px the pets section
+            onClick={
+              () => {
+                window.scrollTo({ top: 20, behavior: 'smooth' });
+              }
+            }
+          >
             View All Pets
           </Button>
           <Button variant="outline">

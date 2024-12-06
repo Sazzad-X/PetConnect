@@ -37,7 +37,7 @@ class Pet(models.Model):
 
 
 class PetApplication(models.Model):
-    pet = models.OneToOneField(
+    pet = models.ForeignKey(
         Pet, on_delete=models.CASCADE, related_name="applications"
     )
     adopter = models.ForeignKey(

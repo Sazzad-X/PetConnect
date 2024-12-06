@@ -71,7 +71,9 @@ export default ({ userData, params }: { userData: any; params: any }) => {
 
             {/* Action Buttons */}
             <div className="mt-8 flex gap-4">
-              <AppointmentDialog />  {/* Your Appointment button or dialog */}
+              <AppointmentDialog id={
+                encyclopedia.id
+              } />  {/* Your Appointment button or dialog */}
             </div>
 
           </div>

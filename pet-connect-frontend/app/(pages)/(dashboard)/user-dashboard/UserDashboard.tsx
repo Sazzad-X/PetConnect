@@ -10,6 +10,8 @@ import axios from "axios";
 export default ({ userData }: { userData: any }) => {
   const [encyclopedia, setEncyclopedia] = useState([]);
   const [adoption, setAdoption] = useState([]);
+  const [appointment, setAppointment] = useState([]);
+
   useEffect(() => {
     const fetchingEncyclopedia = async () => {
       try {
@@ -44,8 +46,27 @@ export default ({ userData }: { userData: any }) => {
         console.log(error);
       }
     };
+
+    const fetchingAppointment = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/pet-application/`,
+          {
+            headers: {
+              Authorization: `Bearer ${userData.access_token}`,
+            },
+          }
+        );
+        // console.log(res.data);
+        setAppointment(res.data);
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
+
     fetchingEncyclopedia();
     fetchingAdoption();
+    fetchingAppointment();
   }, []);
   return (
     <div className="max-w-7xl mx-auto p-2 mt-8">
@@ -57,6 +78,7 @@ export default ({ userData }: { userData: any }) => {
       </Link>
       <DataChart encyclopedia={encyclopedia} adoption={adoption} />
       <DataTable
+        application={appointment}
         encyclopedia={encyclopedia}
         adoption={adoption}
         userData={userData}

@@ -53,6 +53,9 @@ export default function page() {
       // console.log("Response", res);
       toast.success("Login successful");
       router.push("/");
+      setTimeout(() => {
+        location.reload();
+      }, 600);      
     } catch (error) {
       toast.error("Login failed");
       console.log("Error", error);

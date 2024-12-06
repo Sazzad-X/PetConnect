@@ -9,6 +9,7 @@ from adoption.serializers import (
     PetSerializer,
     UserSerializer,
     PetApplicationSerializer,
+    PetApplicationReadSerializer,
 )
 from adoption.models import Encyclopedia, Pet, User, PetApplication
 
@@ -149,11 +150,11 @@ class PetApplicationView(APIView):
         # get individual pet application
         if "id" in request.query_params:
             pet_application = PetApplication.objects.get(id=request.query_params["id"])
-            serializer = PetApplicationSerializer(pet_application)
+            serializer = PetApplicationReadSerializer(pet_application)
             return Response(serializer.data)
 
         pet_applications = PetApplication.objects.filter(adopter=request.user)
-        serializer = PetApplicationSerializer(pet_applications, many=True)
+        serializer = PetApplicationReadSerializer(pet_applications, many=True)
         return Response(serializer.data)
 
     def post(self, request):
