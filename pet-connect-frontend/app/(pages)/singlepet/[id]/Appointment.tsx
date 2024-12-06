@@ -9,7 +9,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { BsCashCoin } from "react-icons/bs";
+import { FaRegCheckCircle } from "react-icons/fa";
+
 
 export default function AppointmentDialog() {
   const [data, setData] = useState({
@@ -29,7 +30,7 @@ export default function AppointmentDialog() {
     <Dialog>
       <DialogTrigger>
         <div className="bg-green-600 flex items-center text-white px-6 py-2 rounded-md hover:bg-green-700 transition">
-          <BsCashCoin className="mr-2" /> Apply For Appointment
+          <FaRegCheckCircle className="mr-2" /> Apply For Appointment
         </div>
       </DialogTrigger>
       <DialogContent>

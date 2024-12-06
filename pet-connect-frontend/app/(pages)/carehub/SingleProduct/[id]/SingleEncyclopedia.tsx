@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { PiMoneyWavyFill } from "react-icons/pi";
 
 export default ({ userData, params }: { userData: any; params: any }) => {
-  const [encyclopedia, setEncyclopedia] = useState<any>(null);  
+  const [encyclopedia, setEncyclopedia] = useState<any>(null);
   useEffect(() => {
     const fetchingEncyclopedia = async () => {
       try {
@@ -16,16 +16,16 @@ export default ({ userData, params }: { userData: any; params: any }) => {
             },
           }
         );
-        console.log(res.data);  
-        setEncyclopedia(res.data); 
+        console.log(res.data);
+        setEncyclopedia(res.data);
       } catch (error: any) {
-        console.log(error);  
+        console.log(error);
       }
     };
 
     fetchingEncyclopedia();
-  }, [params.id, userData.access_token]); 
-  
+  }, [params.id, userData.access_token]);
+
   if (!encyclopedia) {
     return <div>Loading...</div>;
   }
@@ -50,17 +50,6 @@ export default ({ userData, params }: { userData: any; params: any }) => {
           {/* Pet Description */}
           <p className="text-gray-600 mb-6">{encyclopedia.details}</p>
 
-          {/* Pet Information */}
-          <div className="space-y-3">
-             {/* <p>
-              <span className="font-semibold text-gray-700">Price:</span> 500৳ 
-            </p>  */}
-            <p>
-              <span className="font-semibold text-gray-700">Status:</span> {encyclopedia.approved ? 'In Stock' : 'Out of Stock'}
-            </p>
-            
-          </div>
-
           {/* Action Buttons */}
           <div className="mt-8 flex gap-4">
             <Button className="bg-green-600 hover:bg-green-700 duration-150">
@@ -69,7 +58,7 @@ export default ({ userData, params }: { userData: any; params: any }) => {
             </Button>
           </div>
 
-          
+
         </div>
       </div>
     </div>

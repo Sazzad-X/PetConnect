@@ -28,20 +28,17 @@ const CardTemp = ({ item }: { item: any }) => {
               {item?.title || "No Title Available"}
             </Link>
             <p className="text-gray-500 text-sm">
-              {item?.details || "No details available for this product."}
+              {item?.details.length > 20 ? item?.details.slice(0, 20) + "..." : item?.details}
             </p>
           </div>
 
           {/* Price and Location (Optional Placeholder) */}
-          <div className="flex items-center justify-between text-sm font-medium text-gray-700">
-            <span className="font-bold text-lg">{item?.price ? `${item.price} $` : "Price not specified"}</span>
+          <div className="flex items-center justify-between text-sm font-medium text-gray-700">            
             {/* <span className="text-gray-600 text-xs underline">SuperShop, Rajshahi</span> */}
           </div>
 
           {/* Badges */}
-          <div className="flex flex-wrap gap-2">
-           
-           
+          <div className="flex flex-wrap gap-2">                      
             <Badge variant={"secondary"} className="text-xs">
                {new Date(item?.updated_at || Date.now()).toLocaleDateString()}
             </Badge>

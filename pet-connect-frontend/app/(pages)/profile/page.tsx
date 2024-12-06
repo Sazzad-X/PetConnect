@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { MdOutlineDashboard } from "react-icons/md";
 import EditProfie from "./EditProfie";
 import Loading from "@/components/Loading";
+import { Button } from "react-day-picker";
 export default () => {
   const [userData, setUserData] = useState<any>({
     name: "N/A",
@@ -105,14 +106,14 @@ export default () => {
               >
                 <MdOutlineDashboard className="mr-2" /> Dashboard
               </Link>
-              <Link
-                href={"/"}
+              <div
+                onClick={
+                  logout
+                }
                 className="bg-red-500 flex items-center text-white px-6 py-2 rounded-md hover:bg-red-600 transition"
               >
-                <LogOut onClick={
-                  logout
-                } size={20} className="mr-2" /> Log out
-              </Link>
+                <LogOut size={20} className="mr-2" /> Log out
+              </div>
             </div>
           </div>
         </div>

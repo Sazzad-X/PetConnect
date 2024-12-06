@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import CardTemp from "./CardTemp";
 import axios from "axios";
+import Loading from "@/components/Loading";
 
 export default ({ userData }: { userData: any }) => {
   const [encyclopedia, setEncyclopedia] = useState([]);
@@ -27,17 +28,23 @@ export default ({ userData }: { userData: any }) => {
   }, []);
   return (
     <div className="md:mx-auto container mt-4">
+      {
+        encyclopedia.length === 0 &&
+        <Loading />
+      }
       <div className="w-full">
         <img src="/petHealth.avif" className="rounded-md" alt="" />
       </div>
-
-      <div className="mt-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  gap-4 md:mx-0 mx-4">
-          {encyclopedia.map((item, i) => (
-            <CardTemp item={item} key={i} />
-          ))}
+      {
+        encyclopedia.length !== 0 &&
+        <div className="mt-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  gap-4 md:mx-0 mx-4">
+            {encyclopedia.map((item, i) => (
+              <CardTemp item={item} key={i} />
+            ))}
+          </div>
         </div>
-      </div>
+      }
     </div>
   );
 }
