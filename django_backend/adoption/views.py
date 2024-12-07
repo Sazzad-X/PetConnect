@@ -56,7 +56,7 @@ class PetView(APIView):
             serializer = PetSerializer(pet)
             return Response(serializer.data)
 
-        pets = Pet.objects.filter(user=request.user)
+        pets = Pet.objects.filter(user=request.user).order_by("-id")
         serializer = PetSerializer(pets, many=True)
         return Response(serializer.data)
 
@@ -88,7 +88,7 @@ class PublicPetView(APIView):
             serializer = PetSerializer(pet)
             return Response(serializer.data)
 
-        pets = Pet.objects.filter(approved=True)
+        pets = Pet.objects.filter(approved=True).order_by("-id")
         serializer = PetSerializer(pets, many=True)
         return Response(serializer.data)
 
@@ -104,7 +104,7 @@ class EncyclopediaView(APIView):
             serializer = EncyclpediaSerializer(encyclpedia)
             return Response(serializer.data)
 
-        encyclpedias = Encyclopedia.objects.filter(user=request.user)
+        encyclpedias = Encyclopedia.objects.filter(user=request.user).order_by("-id")
         serializer = EncyclpediaSerializer(encyclpedias, many=True)
         return Response(serializer.data)
 
@@ -138,7 +138,7 @@ class PublicEncyclopediaView(APIView):
             serializer = EncyclpediaSerializer(encyclpedia)
             return Response(serializer.data)
 
-        encyclpedias = Encyclopedia.objects.filter(approved=True)
+        encyclpedias = Encyclopedia.objects.filter(approved=True).order_by("-id")
         serializer = EncyclpediaSerializer(encyclpedias, many=True)
         return Response(serializer.data)
 
@@ -153,7 +153,7 @@ class PetApplicationView(APIView):
             serializer = PetApplicationReadSerializer(pet_application)
             return Response(serializer.data)
 
-        pet_applications = PetApplication.objects.filter(adopter=request.user)
+        pet_applications = PetApplication.objects.filter(adopter=request.user).order_by("-id")
         serializer = PetApplicationReadSerializer(pet_applications, many=True)
         return Response(serializer.data)
 

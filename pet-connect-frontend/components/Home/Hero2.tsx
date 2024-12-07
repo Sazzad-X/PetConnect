@@ -29,13 +29,20 @@ export default function HeroSection() {
             // scroll down to 20px the pets section
             onClick={
               () => {
-                window.scrollTo({ top: 20, behavior: 'smooth' });
+                window.scrollTo({ top: 650, behavior: 'smooth' });
               }
             }
           >
             View All Pets
           </Button>
-          <Button variant="outline">
+          <Button variant="outline"
+            // scroll down to 20px the pets section
+            onClick={
+              () => {
+                window.open('https://en.wikipedia.org/wiki/Pet_adoption', '_blank');
+              }
+            }
+          >
             Learn More
           </Button>
         </div>

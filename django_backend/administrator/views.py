@@ -91,7 +91,7 @@ class EncyclopediaApprovalView(APIView):
     permission_classes = [AuthenticateOnlyAdmin]
 
     def get(self, request):
-        encyclopedias = Encyclopedia.objects.filter(approved=False)
+        encyclopedias = Encyclopedia.objects.filter(approved=False).order_by("-id")
         serializer = EncyclpediaSerializer(encyclopedias, many=True)
         return Response(serializer.data)
 
@@ -111,7 +111,7 @@ class PetApprovalView(APIView):
     permission_classes = [AuthenticateOnlyAdmin]
 
     def get(self, request):
-        pets = Pet.objects.filter(approved=False)
+        pets = Pet.objects.filter(approved=False).order_by("-id")
         serializer = PetSerializer(pets, many=True)
         return Response(serializer.data)
 

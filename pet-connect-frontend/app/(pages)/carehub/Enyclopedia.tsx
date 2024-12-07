@@ -10,12 +10,7 @@ const Page = ({ userData }: { userData: any }) => {
     const fetchingEncyclopedia = async () => {
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/public-encyclopedia/`,
-          {
-            headers: {
-              Authorization: `Bearer ${userData.access_token}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/public-encyclopedia/`,          
         );
         // console.log(res.data);
         setEncyclopedia(res.data);

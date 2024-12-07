@@ -23,7 +23,7 @@ const SingleEncyclopedia = ({ userData, params }: { userData: any; params: any }
     };
 
     fetchingEncyclopedia();
-  }, [params.id, userData.access_token]);
+  }, [params.id]);
 
   return (
     <div className="mt-3">

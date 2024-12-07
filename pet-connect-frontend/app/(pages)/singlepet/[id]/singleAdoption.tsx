@@ -8,13 +8,17 @@ const SingleAdoption = ({ userData, params }: { userData: any; params: any }) =>
 
   useEffect(() => {
     const fetchingPet = async () => {
+      let headers = {};
+      if (userData) {
+        headers = {
+          Authorization: `Bearer ${userData.access_token}`,
+        };
+      }
       try {
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/public-pet/?id=${params.id}`,
           {
-            headers: {
-              Authorization: `Bearer ${userData.access_token}`,
-            },
+            headers: headers,
           }
         );
         console.log(res.data);
@@ -25,7 +29,7 @@ const SingleAdoption = ({ userData, params }: { userData: any; params: any }) =>
     };
 
     fetchingPet();
-  }, [params.id, userData.access_token]);
+  }, [params.id, userData]);
 
 
 

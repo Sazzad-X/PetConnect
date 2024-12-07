@@ -10,9 +10,7 @@ const Page = () => {
   const router = useRouter();
   useEffect(() => {
     const User_Data = localStorage.getItem("user_data");
-    if (!User_Data) {
-      router.push("/login");
-    } else {
+    if (User_Data) {
       setUserData(JSON.parse(User_Data));
     }
     setIsLoading(false);
