@@ -8,7 +8,7 @@ import { MdOutlineDashboard } from "react-icons/md";
 import EditProfie from "./EditProfie";
 import Loading from "@/components/Loading";
 import { Button } from "react-day-picker";
-export default () => {
+const Page = () => {
   const [userData, setUserData] = useState<any>({
     name: "N/A",
     address: "N/A",
@@ -121,3 +121,5 @@ export default () => {
     </>
   );
 };
+
+export default Page;

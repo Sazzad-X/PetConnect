@@ -3,7 +3,7 @@ import Loading from "@/components/Loading";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Enyclopedia from "./Enyclopedia";
-export default () => {
+const Page = () => {
   const [userData, setUserData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -19,3 +19,5 @@ export default () => {
   }, [router]);
   return <>{isLoading ? <Loading /> : <Enyclopedia userData={userData} />}</>;
 };
+
+export default Page;

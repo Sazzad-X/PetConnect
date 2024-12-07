@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import AppointmentDialog from "./Appointment";
 import Loading from "@/components/Loading";
 
-export default ({ userData, params }: { userData: any; params: any }) => {
+const SingleAdoption = ({ userData, params }: { userData: any; params: any }) => {
   const [encyclopedia, setEncyclopedia] = useState<any>([]);
 
   useEffect(() => {
@@ -82,3 +82,5 @@ export default ({ userData, params }: { userData: any; params: any }) => {
     </div>
   );
 };
+
+export default SingleAdoption;

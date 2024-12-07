@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dialog";
 import { FaRegEdit } from "react-icons/fa";
 
-export default ({ data }: { data: any }) => {
+const Page = ({ data }: { data: any }) => {
   return (
     <div>
       <Dialog>
@@ -168,3 +168,5 @@ export function PostPetEdit({ initialPetData }: { initialPetData: any }) {
     </div>
   );
 }
+
+export default Page;

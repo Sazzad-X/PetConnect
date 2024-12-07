@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">About Us</h3>
             <p className="text-sm text-gray-600 dark:text-gray-300">
-              We're dedicated to connecting loving homes with pets in need. Our mission is to make pet adoption easy, accessible, and rewarding.
+              We&apos;re dedicated to connecting loving homes with pets in need. Our mission is to make pet adoption easy, accessible, and rewarding.
             </p>
           </div>
           <div className="space-y-4">

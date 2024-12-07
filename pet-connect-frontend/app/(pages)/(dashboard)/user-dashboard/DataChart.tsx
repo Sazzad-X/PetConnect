@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
-export default ({
+const DataChart = ({
   encyclopedia,
   adoption,
 }: {
@@ -12,7 +12,7 @@ export default ({
   const Data = [
     { title: "Total Adoptions", value: encyclopedia.length, color: "#0088FE" },
     { title: "Total Encyclopedias", value: adoption.length, color: "#00C49F" },
-    { title: "Total", value: encyclopedia.length+adoption.length, color: "#FFBB28" },
+    { title: "Total", value: encyclopedia.length + adoption.length, color: "#FFBB28" },
   ];
 
   const chartData = Data.map((item) => ({
@@ -64,7 +64,7 @@ export default ({
                 cy="50%"
                 outerRadius={100}
                 fill="#8884d8"
-                // label
+              // label
               >
                 {chartData.map((entry, index) => (
                   <Cell
@@ -82,3 +82,4 @@ export default ({
     </>
   );
 };
+export default DataChart;

@@ -7,9 +7,9 @@ import DataTable from "./DataTable";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default ({ userData }: { userData: any }) => {
+const AdminDashboard = ({ userData }: { userData: any }) => {
   const [encyclopedia, setEncyclopedia] = useState([]);
-  const [adoption, setAdoption] = useState([]);  
+  const [adoption, setAdoption] = useState([]);
 
   useEffect(() => {
     const fetchingEncyclopedia = async () => {
@@ -23,7 +23,7 @@ export default ({ userData }: { userData: any }) => {
           }
         );
         console.log(res.data);
-        setEncyclopedia(res.data);        
+        setEncyclopedia(res.data);
         // console.log(res);
       } catch (error: any) {
         console.log(error);
@@ -41,12 +41,12 @@ export default ({ userData }: { userData: any }) => {
           }
         );
         // console.log(res.data);
-        setAdoption(res.data);        
+        setAdoption(res.data);
       } catch (error: any) {
         console.log(error);
       }
     };
-    
+
     fetchingEncyclopedia();
     fetchingAdoption();
   }, []);
@@ -67,3 +67,6 @@ export default ({ userData }: { userData: any }) => {
     </div>
   );
 };
+
+
+export default AdminDashboard;

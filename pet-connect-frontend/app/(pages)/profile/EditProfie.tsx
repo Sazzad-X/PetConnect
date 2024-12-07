@@ -17,7 +17,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 
-export default ({ userData }: { userData: any }) => {
+const EditProfile = ({ userData }: { userData: any }) => {
   const [profile, setProfile] = useState({
     name: userData.name,
     location: userData.address,
@@ -80,7 +80,7 @@ export default ({ userData }: { userData: any }) => {
         <DialogHeader>
           <DialogTitle>Edit Profile</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -131,3 +131,4 @@ export default ({ userData }: { userData: any }) => {
     </Dialog>
   );
 };
+export default EditProfile;

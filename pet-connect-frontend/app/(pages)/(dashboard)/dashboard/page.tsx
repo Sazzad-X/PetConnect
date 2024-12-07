@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import UserDashboard from "../user-dashboard/UserDashboard";
 import AdminDashboard from "../admin-dashboard/AdminDashboard";
 import Loading from "@/components/Loading";
-const page = () => {
+const Page = () => {
   const [userData, setUserData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   
@@ -30,4 +30,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

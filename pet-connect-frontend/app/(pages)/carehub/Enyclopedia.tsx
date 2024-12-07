@@ -4,7 +4,7 @@ import CardTemp from "./CardTemp";
 import axios from "axios";
 import Loading from "@/components/Loading";
 
-export default ({ userData }: { userData: any }) => {
+const Page = ({ userData }: { userData: any }) => {
   const [encyclopedia, setEncyclopedia] = useState([]);
   useEffect(() => {
     const fetchingEncyclopedia = async () => {
@@ -48,3 +48,4 @@ export default ({ userData }: { userData: any }) => {
     </div>
   );
 }
+export default Page;

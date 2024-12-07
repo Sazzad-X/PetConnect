@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { PiMoneyWavyFill } from "react-icons/pi";
 
-export default ({ userData, params }: { userData: any; params: any }) => {
+const SingleEncyclopedia = ({ userData, params }: { userData: any; params: any }) => {
   const [encyclopedia, setEncyclopedia] = useState<any>({
     title: "",
     details: "",
@@ -49,3 +49,5 @@ export default ({ userData, params }: { userData: any; params: any }) => {
     </div>
   );
 };
+
+export default SingleEncyclopedia;

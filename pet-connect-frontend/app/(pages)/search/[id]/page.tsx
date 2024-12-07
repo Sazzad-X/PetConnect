@@ -4,7 +4,7 @@ import SearchResults from "./SearchResults";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Loading from "@/components/Loading";
-const page = () => {
+const Page = () => {
   const [userData, setUserData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);  
   const query = useSearchParams().get("q");
@@ -43,4 +43,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

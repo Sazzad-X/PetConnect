@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dialog";
 import { FaRegEdit } from "react-icons/fa";
 
-export default ({ data }: { data: any }) => {
+const EditEncyclopediaDetailsPage = ({ data }: { data: any }) => {
   return (
     <div>
       <Dialog>
@@ -140,3 +140,5 @@ export function EditEncyclopediaDetails({ initialPetData }: { initialPetData: an
     </div>
   );
 }
+
+export default EditEncyclopediaDetailsPage;

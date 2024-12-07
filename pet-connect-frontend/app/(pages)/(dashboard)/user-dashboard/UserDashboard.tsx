@@ -7,7 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default ({ userData }: { userData: any }) => {
+const Page = ({ userData }: { userData: any }) => {
   const [encyclopedia, setEncyclopedia] = useState([]);
   const [adoption, setAdoption] = useState([]);
   const [appointment, setAppointment] = useState([]);
@@ -86,3 +86,5 @@ export default ({ userData }: { userData: any }) => {
     </div>
   );
 };
+
+export default Page;
