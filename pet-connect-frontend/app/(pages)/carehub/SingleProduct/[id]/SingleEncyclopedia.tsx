@@ -4,17 +4,16 @@ import { useEffect, useState } from "react";
 import { PiMoneyWavyFill } from "react-icons/pi";
 
 export default ({ userData, params }: { userData: any; params: any }) => {
-  const [encyclopedia, setEncyclopedia] = useState<any>(null);
+  const [encyclopedia, setEncyclopedia] = useState<any>({
+    title: "",
+    details: "",
+    image: "",
+  });
   useEffect(() => {
     const fetchingEncyclopedia = async () => {
       try {
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_BASE_URL}/adoption/public-encyclopedia/?id=${params.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${userData.access_token}`,
-            },
-          }
         );
         console.log(res.data);
         setEncyclopedia(res.data);
@@ -25,10 +24,6 @@ export default ({ userData, params }: { userData: any; params: any }) => {
 
     fetchingEncyclopedia();
   }, [params.id, userData.access_token]);
-
-  if (!encyclopedia) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="mt-3">
