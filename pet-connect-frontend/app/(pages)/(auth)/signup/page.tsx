@@ -53,7 +53,7 @@ export default function Page() {
           password2: password2,
         }
       );
-      if (res.status !== 201) {
+      if (res.status === 201) {
         toast.success("Verification e-mail sent.");
       }
       else {
