@@ -26,3 +26,4 @@ def test_private_pet_view():
     assert (
         response.status_code != status.HTTP_200_OK
     ), f"Expected non-200 status code, but got {response.status_code}"
+
